@@ -1,0 +1,92 @@
+#include "rdfs_generator.h"
+#include "resolver_breadthfirstsearch.h"
+#include "resolver_djikstra.h"
+#include "resolver_a.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+int main_resolver();
+
+int main(int argc, char** argv){//HEIGHT WIDTH
+    //INITIALISATION :
+    if(argc!=3){perror("Vous avez oublié de mettre les (bonnes) dimensions.");exit(1);}
+    srand(time(NULL));
+    const int height=atoi(argv[argc-2]);
+    const int width=atoi(argv[argc-1]);
+
+    //GENERATION :
+    struct Grid grid_main=create_grid(height, width);
+    //Je commence arbitrairement dans la cellule (0;0).
+    int height_current_cell=0;
+    int width_current_cell=0;
+    enum Direction last_direction;
+
+    int stop_condition=0;
+    while(stop_condition<(height*width)){//height*width car c'est le nb total de cellules à visiter (?)
+        printf("%d",stop_condition);
+        if(!visitor(&(grid_main.cells[height_current_cell][width_current_cell]))){
+            fprintf(stderr,"Erreur lors de la visitation. (?)\n");
+            free_grid(&grid_main);
+            exit(1);
+        }
+        int* tab_authorized=malloc(sizeof(int)*4);
+        int size_tab_authorized;
+        create_tab_authorized(tab_authorized,&size_tab_authorized,&grid_main,height_current_cell,width_current_cell);
+        //BACKTRACKING :
+        if(size_tab_authorized>0){//Si il y a une cellule possible, on continue normalement ...
+            enum Direction dir_next_cell=nb_random1(tab_authorized,size_tab_authorized);
+            last_direction=reverser_direction(dir_next_cell);//je garde la derniere direction
+            free(tab_authorized);
+            if(dir_next_cell==-1){//Seconde vérification du BackTracking
+                fprintf(stderr,"Error BackTracking.\n");
+                free_grid(&grid_main);
+                exit(1);
+            }
+            //Liaison :
+            if(!linker_cells(&(grid_main.cells[height_current_cell][width_current_cell]),&(grid_main.cells[f_height_next_cell(height_current_cell,dir_next_cell)][f_width_next_cell(width_current_cell,dir_next_cell)]),dir_next_cell)){
+                fprintf(stderr,"Error in linker_cells()\n");
+                free(&grid_main);
+                exit(1);
+            }
+            height_current_cell=f_height_next_cell(height_current_cell,dir_next_cell);
+            width_current_cell=f_width_next_cell(width_current_cell,dir_next_cell);
+            stop_condition++;
+        }else{
+            free(tab_authorized);
+            height_current_cell=f_height_next_cell(height_current_cell,last_direction);
+            width_current_cell=f_width_next_cell(width_current_cell,last_direction);
+            //pas trop sur de moi à cet endroit !?
+        }
+        //
+    }
+
+    //RESOLUTION :
+    //if(main_resolver()!=0){fprintf(stderr,"Erreur lors de la résolution.\n");}
+    printf("tout c'est bien passé !\n");
+    //NETTOYAGE :
+    free_grid(&grid_main);
+
+    return 0;
+}
+
+
+
+int main_resolver(){
+    printf("1- BreadthFirstSearch\n2- Djikstra\n3- A*\n");
+    int reponse=choix_utilisateur(1,3);
+    switch(reponse){
+    case 1:
+        /* code */
+        break;
+    
+    case 2:
+        /* code */
+        break;
+
+    case 3:
+        /* code */
+        break;
+    }
+    return 0;
+}
+

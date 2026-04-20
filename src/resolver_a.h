@@ -1,0 +1,18 @@
+#ifndef RESOLVER_A_H
+#define RESOLVER_A_H
+
+//BIBLIOTHEQUE
+
+
+//MACRO
+
+//ENUMERATION
+
+
+//STRUCTURE
+
+
+//PROTOTYPE
+
+
+#endif
