@@ -1,4 +1,4 @@
 #
-*.exe
+maze.exe
 *.o
 *.log
