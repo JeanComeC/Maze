@@ -48,4 +48,7 @@ int f_width_next_cell(int width_current_cell, enum Direction direction);
 bool linker_cells(struct Cell* cell_1, struct Cell* cell_2, enum Direction dir_cell_1);
 int reverser_direction(enum Direction direction);
 
+// ===
+void affichage();
+
 #endif
