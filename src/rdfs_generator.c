@@ -49,35 +49,35 @@ int nb_random1(int* tab_authorized, int size_tab_authorized){//fonction qui reto
     return tab_authorized[index_random];
 }
 
-void create_tab_authorized(int* tab_authorized, int* size_tab_authorized, struct Grid* grid, int height_cell, int width_cell){//fonction qui créer un tableau avec les directions valides
+void create_tab_authorized(int* tab_authorized, int* size_tab_authorized, struct Grid* grid, struct Position cell){//fonction qui créer un tableau avec les directions valides
     *size_tab_authorized=0;//on l'initialise à 0 pour être sûr, et pour gérer le cas où toutes les cellules voisines seraient false.
     enum Direction i;
     for(i=0;i<4;i++){
-        if(check_next_cell(grid,height_cell,width_cell,i)){
+        if(check_next_cell(grid,cell,i)){
             tab_authorized[*size_tab_authorized]=i;
             (*size_tab_authorized)++;//ajout de parenthèses car l'opérateur '++' est prioritaire sur '*' .
         }
     }
 }
 
-bool check_next_cell(struct Grid* grid, int height_cell, int width_cell, enum Direction direction_next_cell){//fonction qui vérifie si la cellule peut être visitée ou pas.
+bool check_next_cell(struct Grid* grid, struct Position cell, enum Direction direction_next_cell){//fonction qui vérifie si la cellule peut être visitée ou pas.
     //Check border :
     bool checkpoint_1=false;
     switch(direction_next_cell){
         case NORTH:
-            if(height_cell>0)checkpoint_1=true;
+            if(cell.h>0)checkpoint_1=true;
             break;
         
         case SOUTH:
-            if(height_cell<grid->height-1)checkpoint_1=true;
+            if(cell.h<grid->height-1)checkpoint_1=true;
             break;
         
         case WEST:
-            if(width_cell>0)checkpoint_1=true;
+            if(cell.w>0)checkpoint_1=true;
             break;
         
         case EAST:
-            if(width_cell<grid->width-1)checkpoint_1=true;
+            if(cell.w<grid->width-1)checkpoint_1=true;
             break;
     }
 
@@ -86,19 +86,19 @@ bool check_next_cell(struct Grid* grid, int height_cell, int width_cell, enum Di
     if(checkpoint_1){
         switch(direction_next_cell){
         case NORTH:
-            if(grid->cells[height_cell-1][width_cell].visited==false)checkpoint_2=true;
+            if(grid->cells[cell.h-1][cell.w].visited==false)checkpoint_2=true;
             break;
         
         case SOUTH:
-            if(grid->cells[height_cell+1][width_cell].visited==false)checkpoint_2=true;
+            if(grid->cells[cell.h+1][cell.w].visited==false)checkpoint_2=true;
             break;
         
         case WEST:
-            if(grid->cells[height_cell][width_cell-1].visited==false)checkpoint_2=true;
+            if(grid->cells[cell.h][cell.w-1].visited==false)checkpoint_2=true;
             break;
         
         case EAST:
-            if(grid->cells[height_cell][width_cell+1].visited==false)checkpoint_2=true;
+            if(grid->cells[cell.h][cell.w+1].visited==false)checkpoint_2=true;
             break;
         }
     }
@@ -113,12 +113,10 @@ bool check_next_cell(struct Grid* grid, int height_cell, int width_cell, enum Di
 // ===
 
 bool visitor(struct Cell* cell){//fonction pour activer 'visited' dans une cellule PAS visitée
-    bool error_code=false;
-    if(cell==NULL)return error_code;
-    if(cell->visited==true)return error_code;
+    if(cell==NULL)return false;
+    if(cell->visited==true)return false;
     cell->visited=true;
-    error_code=true;
-    return error_code;
+    return true;
 }
 
 int f_height_next_cell(int height_current_cell, enum Direction direction){
@@ -189,4 +187,33 @@ int reverser_direction(enum Direction direction){//fonction pour inverser une di
     }
     return rev_dir;
 }
+
+// ===
+
+struct Position* create_stack(const int height, const int width){//fonction pour malloc ma pile (stack)
+    struct Position* stack = malloc(sizeof(struct Position)*height*width);
+    if(!stack){perror("Error memory (stack).\n");exit(1);}
+    return stack;
+}
+
+void free_stack(struct Position* stack){//fonction pour free la pile (stack)
+    if(!stack)return;
+    free(stack);
+    stack=NULL;
+}
+
+bool push_stack(int* stack_top, struct Position* stack, struct Position new_position){
+    if((*stack_top)<-1 || !stack)return false;
+    (*stack_top)++;
+    stack[*stack_top]=new_position;
+    return true;
+}
+
+bool pop_stack(int* stack_top){
+    if((*stack_top)<-1)return false;//-1 et pas 0, car sinon on peut pas sortir proprement de la boucle while !
+    (*stack_top)--;
+    return true;
+}
+
+// ===
 

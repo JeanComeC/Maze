@@ -18,49 +18,83 @@ int main(int argc, char** argv){//HEIGHT WIDTH
 
     //GENERATION :
     struct Grid grid_main=create_grid(height, width);
-    //Je commence arbitrairement dans la cellule (0;0).
-    int height_current_cell=0;
-    int width_current_cell=0;
-    enum Direction last_direction;
 
-    int stop_condition=0;
-    while(stop_condition<(height*width)){//height*width car c'est le nb total de cellules à visiter (?)
-        printf("%d",stop_condition);
-        if(!visitor(&(grid_main.cells[height_current_cell][width_current_cell]))){
-            fprintf(stderr,"Erreur lors de la visitation. (?)\n");
+    struct Position* stack_main=create_stack(height,width);
+    int stack_top=-1;
+
+    //Je commence arbitrairement dans la cellule (0;0).
+    struct Position initial_position = {.h=0,.w=0};
+    if(!push_stack(&stack_top,stack_main,initial_position)){
+        fprintf(stderr,"Error push_stack().\n");
+        free_stack(stack_main);
+        free_grid(&grid_main);
+        exit(1);
+    }
+    
+    // enum Direction last_direction;
+    if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
+            fprintf(stderr,"Erreur lors de la visitation initiale.\n");
+            free_stack(stack_main);
             free_grid(&grid_main);
             exit(1);
         }
+
+    while(stack_top>-1){
+        //on créé le tableau des directions autorisées :
         int* tab_authorized=malloc(sizeof(int)*4);
         int size_tab_authorized;
-        create_tab_authorized(tab_authorized,&size_tab_authorized,&grid_main,height_current_cell,width_current_cell);
+        create_tab_authorized(tab_authorized,&size_tab_authorized,&grid_main,stack_main[stack_top]);
+
         //BACKTRACKING :
         if(size_tab_authorized>0){//Si il y a une cellule possible, on continue normalement ...
             enum Direction dir_next_cell=nb_random1(tab_authorized,size_tab_authorized);
-            last_direction=reverser_direction(dir_next_cell);//je garde la derniere direction
             free(tab_authorized);
             if(dir_next_cell==-1){//Seconde vérification du BackTracking
                 fprintf(stderr,"Error BackTracking.\n");
+                free_stack(stack_main);
                 free_grid(&grid_main);
                 exit(1);
             }
+
             //Liaison :
-            if(!linker_cells(&(grid_main.cells[height_current_cell][width_current_cell]),&(grid_main.cells[f_height_next_cell(height_current_cell,dir_next_cell)][f_width_next_cell(width_current_cell,dir_next_cell)]),dir_next_cell)){
+            if(!linker_cells(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]),&(grid_main.cells[stack_main[stack_top+1].h][stack_main[stack_top+1].w]),dir_next_cell)){
                 fprintf(stderr,"Error in linker_cells()\n");
-                free(&grid_main);
+                free_stack(stack_main);
+                free_grid(&grid_main);
                 exit(1);
             }
-            height_current_cell=f_height_next_cell(height_current_cell,dir_next_cell);
-            width_current_cell=f_width_next_cell(width_current_cell,dir_next_cell);
-            stop_condition++;
+
+            //PUSH :
+            struct Position next_position = {.h=f_height_next_cell(stack_main[stack_top].h,dir_next_cell),.w=f_width_next_cell(stack_main[stack_top].w,dir_next_cell)};//je créé une nouvelle position avec les nouvelles coordonnées
+            if(!push_stack(&stack_top,stack_main,next_position)){
+                fprintf(stderr,"Error push_stack().\n");
+                free_stack(stack_main);
+                free_grid(&grid_main);
+                exit(1);
+            }
+            free(tab_authorized);
+
         }else{
             free(tab_authorized);
-            height_current_cell=f_height_next_cell(height_current_cell,last_direction);
-            width_current_cell=f_width_next_cell(width_current_cell,last_direction);
-            //pas trop sur de moi à cet endroit !?
+
+            //POP :
+            if(!pop_stack(&stack_top)){
+                fprintf(stderr,"Error pop_stack().\n");
+                free_stack(stack_main);
+                free_grid(&grid_main);
+                exit(1);
+            }
         }
-        //
+        //on visite la nouvelle cellule à la fin
+        if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
+            fprintf(stderr,"Erreur lors de la visitation.\n");
+            free_stack(stack_main);
+            free_grid(&grid_main);
+            exit(1);
+        }
     }
+
+    free_stack(stack_main);
 
     //AFFICHAGE :
     
