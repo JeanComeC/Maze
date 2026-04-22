@@ -57,7 +57,7 @@ int main(int argc, char** argv){//HEIGHT WIDTH
             }
 
             //Liaison :
-            if(!linker_cells(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]),&(grid_main.cells[stack_main[stack_top+1].h][stack_main[stack_top+1].w]),dir_next_cell)){
+            if(!linker_cells(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]),&(grid_main.cells[f_height_next_cell(stack_main[stack_top].h,dir_next_cell)][f_width_next_cell(stack_main[stack_top].w,dir_next_cell)]),dir_next_cell)){
                 fprintf(stderr,"Error in linker_cells()\n");
                 free_stack(stack_main);
                 free_grid(&grid_main);
@@ -72,7 +72,14 @@ int main(int argc, char** argv){//HEIGHT WIDTH
                 free_grid(&grid_main);
                 exit(1);
             }
-            free(tab_authorized);
+            
+            //on visite la nouvelle cellule :
+            if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
+                fprintf(stderr,"Erreur lors de la visitation.\n");
+                free_stack(stack_main);
+                free_grid(&grid_main);
+                exit(1);
+            }
 
         }else{
             free(tab_authorized);
@@ -84,13 +91,6 @@ int main(int argc, char** argv){//HEIGHT WIDTH
                 free_grid(&grid_main);
                 exit(1);
             }
-        }
-        //on visite la nouvelle cellule à la fin
-        if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
-            fprintf(stderr,"Erreur lors de la visitation.\n");
-            free_stack(stack_main);
-            free_grid(&grid_main);
-            exit(1);
         }
     }
 

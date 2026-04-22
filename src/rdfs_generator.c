@@ -155,15 +155,14 @@ int f_width_next_cell(int width_current_cell, enum Direction direction){
 }
 
 bool linker_cells(struct Cell* cell_1, struct Cell* cell_2, enum Direction dir_cell_1){//fonction pour lier 2 cellules avec une direction.
-    bool errcode=false;
-    if(!cell_1 || !cell_2)return errcode;
+    if(!cell_1 || !cell_2)return false;
     if(cell_1->adjacent_cells[dir_cell_1]!=NULL || cell_2->adjacent_cells[reverser_direction(dir_cell_1)]!=NULL){
         fprintf(stderr,"Error: Ré-écriture de liens interdite.(linker_cells)(!)\n");
-        return errcode;
+        return false;
     }
     cell_1->adjacent_cells[dir_cell_1]=cell_2;
     cell_2->adjacent_cells[reverser_direction(dir_cell_1)]=cell_1;
-    return errcode=true;
+    return true;
 }
 
 int reverser_direction(enum Direction direction){//fonction pour inverser une direction.
