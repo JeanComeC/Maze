@@ -216,3 +216,33 @@ bool pop_stack(int* stack_top){
 
 // ===
 
+void affichage_00(int width){
+    for(int i=0;i<width;i++){
+        printf("+---");
+    }
+    printf("+\n");
+}
+
+void affichage_11(int width){
+    for(int i=0;i<width;i++){
+        printf("|   ");
+    }
+    printf("|\n");
+}
+
+void affichage_EAST(struct Cell cell){
+    if(!cell.adjacent_cells[EAST]){
+        printf("   |");
+    }else{
+        printf("    ");
+    }
+}
+
+void affichage_SOUTH(struct Cell cell){
+    if(!cell.adjacent_cells[SOUTH]){
+        printf("---+");
+    }else{
+        printf("   +");
+    }
+}
+

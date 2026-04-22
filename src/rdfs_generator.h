@@ -60,6 +60,9 @@ bool push_stack(int* stack_top, struct Position* stack, struct Position new_posi
 bool pop_stack(int* stack_top);
 
 // ===
-void affichage();
+void affichage_00(int width);
+void affichage_11(int width);
+void affichage_EAST(struct Cell cell);
+void affichage_SOUTH(struct Cell cell);
 
 #endif

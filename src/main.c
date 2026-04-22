@@ -18,7 +18,6 @@ int main(int argc, char** argv){//HEIGHT WIDTH
 
     //GENERATION :
     struct Grid grid_main=create_grid(height, width);
-
     struct Position* stack_main=create_stack(height,width);
     int stack_top=-1;
 
@@ -96,11 +95,30 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     free_stack(stack_main);
 
     //AFFICHAGE :
-    
+    affichage_00(width);
+    for(int m=0;m<height;m++){
+        printf("|");
+        for(int n=0;n<width;n++){
+            affichage_EAST(grid_main.cells[m][n]);
+        }
+        printf("\n");
+        printf("+");
+        for(int n=0;n<width;n++){
+            affichage_SOUTH(grid_main.cells[m][n]);
+        }
+        printf("\n");
+    }
+
+    //AFFICHAGE TOTALE:
+    // for(int m=0;m<height;m++){
+    //     affichage_00(width);
+    //     affichage_11(width);
+    // }
+    // affichage_00(width);
 
     //RESOLUTION :
     //if(main_resolver()!=0){fprintf(stderr,"Erreur lors de la résolution.\n");}
-    printf("tout c'est bien passé !\n");
+    printf("\ntout c'est bien passé !\n");
     //NETTOYAGE :
     free_grid(&grid_main);
 
