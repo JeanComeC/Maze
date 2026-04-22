@@ -33,11 +33,11 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     
     // enum Direction last_direction;
     if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
-            fprintf(stderr,"Erreur lors de la visitation initiale.\n");
-            free_stack(stack_main);
-            free_grid(&grid_main);
-            exit(1);
-        }
+        fprintf(stderr,"Erreur lors de la visitation initiale.\n");
+        free_stack(stack_main);
+        free_grid(&grid_main);
+        exit(1);
+    }
 
     while(stack_top>-1){
         //on créé le tableau des directions autorisées :
@@ -72,7 +72,7 @@ int main(int argc, char** argv){//HEIGHT WIDTH
                 free_grid(&grid_main);
                 exit(1);
             }
-            
+
             //on visite la nouvelle cellule :
             if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
                 fprintf(stderr,"Erreur lors de la visitation.\n");
@@ -93,7 +93,6 @@ int main(int argc, char** argv){//HEIGHT WIDTH
             }
         }
     }
-
     free_stack(stack_main);
 
     //AFFICHAGE :
