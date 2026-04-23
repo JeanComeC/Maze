@@ -22,7 +22,7 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     int stack_top=-1;
 
     //Je commence arbitrairement dans la cellule (0;0).
-    struct Position initial_position = {.h=0,.w=0};
+    struct Position initial_position = {.h=HEIGHT_INITIAL_POSITION,.w=WIDTH_INITIAL_POSITION};
     if(!push_stack(&stack_top,stack_main,initial_position)){
         fprintf(stderr,"Error push_stack().\n");
         free_stack(stack_main);
@@ -120,7 +120,11 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     int reponse=choix_utilisateur(1,3);
     switch(reponse){
     case 1:
-        /* code */
+        if(!breadthfirstsearch_main(grid_main)){
+            fprintf(stderr,"Error BreadthFirstSearch.\n");
+            free_grid(&grid_main);
+            exit(1);
+        }
         break;
     
     case 2:

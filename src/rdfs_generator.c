@@ -1,5 +1,12 @@
 #include "rdfs_generator.h"
 
+/*
+Randomized Depth-First Search (R DFS) :
+Le DFS utilise une pile. Il va le plus loin possible, et quand il est bloqué, il retourne en arrière jusqu'à avoir une sortie
+possible.
+Il ne trouve pas toujours le plus court chemin (ce qui n'est pas genant ici car je l'utilise pour générer pas pour résoudre !).
+*/
+
 struct Grid create_grid(const int height, const int width){//fonction pour créer mon grand tableau avec toutes les cellules.
     struct Grid new_grid={.cells=NULL,.height=height,.width=width};//j'initialise maintenant car apès c'est impossible car c'est des const
     new_grid.cells=malloc(sizeof(struct Cell*)*height);

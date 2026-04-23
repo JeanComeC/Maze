@@ -5,6 +5,9 @@
 
 
 //MACRO
+#define CELL_TYPE_1 1
+#define CELL_TYPE_2 2
+#define CELL_TYPE_3 3
 
 //ENUMERATION
 

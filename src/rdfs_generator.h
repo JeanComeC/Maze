@@ -12,6 +12,9 @@
 #define SIZE_HEIGHT_MAX 20
 #define SIZE_WIDTH_MAX 38
 
+#define HEIGHT_INITIAL_POSITION 0
+#define WIDTH_INITIAL_POSITION 0
+
 //ENUMERATION
 enum Direction{
     NORTH, //=> 0
