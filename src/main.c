@@ -10,11 +10,11 @@ int main_resolver();
 int main(int argc, char** argv){//HEIGHT WIDTH
     //INITIALISATION :
     if(argc!=3){perror("Vous avez oublié de mettre les (bonnes) dimensions.");exit(1);}
-    //rajouter les conditions pour vérifier que les dimensions ne soient pas absurdes (0 0, ou 1 0, 0 x, etc ...)
-
     srand(time(NULL));
     const int height=atoi(argv[argc-2]);
     const int width=atoi(argv[argc-1]);
+    //Conditions pour vérifier que les dimensions ne soient pas absurdes (0 0, ou 1 0, 0 x, etc ...)
+    if(height<1 || height>SIZE_HEIGHT_MAX || width<1 || width>SIZE_WIDTH_MAX){fprintf(stderr,"Dimensions' size is not valid.\n");exit(1);}
 
     //GENERATION :
     struct Grid grid_main=create_grid(height, width);
