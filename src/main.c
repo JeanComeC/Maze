@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main_resolver();
+int choix_utilisateur(int min_choice, int max_choice);
 
 int main(int argc, char** argv){//HEIGHT WIDTH
     //INITIALISATION :
@@ -30,7 +30,6 @@ int main(int argc, char** argv){//HEIGHT WIDTH
         exit(1);
     }
     
-    // enum Direction last_direction;
     if(!visitor(&(grid_main.cells[stack_main[stack_top].h][stack_main[stack_top].w]))){
         fprintf(stderr,"Erreur lors de la visitation initiale.\n");
         free_stack(stack_main);
@@ -117,17 +116,6 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     // affichage_00(width);
 
     //RESOLUTION :
-    //if(main_resolver()!=0){fprintf(stderr,"Erreur lors de la résolution.\n");}
-    printf("\ntout c'est bien passé !\n");
-    //NETTOYAGE :
-    free_grid(&grid_main);
-
-    return 0;
-}
-
-
-
-int main_resolver(){
     printf("1- BreadthFirstSearch\n2- Djikstra\n3- A*\n");
     int reponse=choix_utilisateur(1,3);
     switch(reponse){
@@ -143,6 +131,21 @@ int main_resolver(){
         /* code */
         break;
     }
+
+    printf("\ntout c'est bien passé !\n");
+    //NETTOYAGE :
+    free_grid(&grid_main);
+
     return 0;
+}
+
+int choix_utilisateur(int min_choice, int max_choice){
+    int rep;
+    scanf(" %d",&rep);
+    if(rep>max_choice || rep<min_choice){
+        printf("Votre choix doit être compris entre %d et %d inclus.\n",min_choice,max_choice);
+        return choix_utilisateur(min_choice,max_choice);
+    }
+    return rep;
 }
 

@@ -13,6 +13,6 @@
 
 
 //PROTOTYPE
-int choix_utilisateur(int min_choice, int max_choice);
+
 
 #endif
