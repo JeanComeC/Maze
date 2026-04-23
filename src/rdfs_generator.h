@@ -9,8 +9,8 @@
 #include <time.h>
 
 //MACRO
-#define SIZE_HEIGHT_MAX 30
-#define SIZE_WIDTH_MAX 30
+#define SIZE_HEIGHT_MAX 20
+#define SIZE_WIDTH_MAX 38
 
 //ENUMERATION
 enum Direction{
