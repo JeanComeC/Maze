@@ -118,9 +118,14 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     //RESOLUTION :
     printf("1- BreadthFirstSearch\n2- Djikstra\n3- A*\n");
     int reponse=choix_utilisateur(1,3);
+
+    //Je choisis arbitrairement que l'entrée est en bas à gauche, et l'arrivée en haut à droite :
+    struct Position start_position = {.h=height,.w=0};
+    struct Position arrival_position = {.h=0,.w=width};
+
     switch(reponse){
     case 1:
-        if(!breadthfirstsearch_main(grid_main)){
+        if(!breadthfirstsearch_main(grid_main,start_position,arrival_position)){
             fprintf(stderr,"Error BreadthFirstSearch.\n");
             free_grid(&grid_main);
             exit(1);
@@ -128,7 +133,11 @@ int main(int argc, char** argv){//HEIGHT WIDTH
         break;
     
     case 2:
-        /* code */
+        if(!djikstra_main(grid_main,start_position,arrival_position)){
+            fprintf(stderr,"Error Djikstra.\n");
+            free_grid(&grid_main);
+            exit(1);
+        }
         break;
 
     case 3:
@@ -142,6 +151,7 @@ int main(int argc, char** argv){//HEIGHT WIDTH
 
     return 0;
 }
+
 
 int choix_utilisateur(int min_choice, int max_choice){
     int rep;

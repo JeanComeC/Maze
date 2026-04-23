@@ -9,3 +9,8 @@ Si traverser chaque cellule coute toujours "1", Djikstra retourne la meme chose 
 des cellules boueuses qui coute "3" par exemple, car il retournera le chemin le moins couteux.
 */
 
+bool djikstra_main(struct Grid grid, struct Position start_position, struct Position arrival_position){
+    if(!grid.cells)return false;
+    //
+    return true;
+}

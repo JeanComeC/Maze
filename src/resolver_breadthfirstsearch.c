@@ -9,7 +9,7 @@ BFS explore toutes les cellules de la couche 1, puis 2, etc ... et après, il "r
 le plus court.
 */
 
-bool breadthfirstsearch_main(struct Grid grid){
+bool breadthfirstsearch_main(struct Grid grid, struct Position start_position, struct Position arrival_position){
     if(!grid.cells)return false;
     //
     return true;
