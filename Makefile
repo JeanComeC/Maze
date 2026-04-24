@@ -21,6 +21,3 @@ maze.exe: resolver_a.o resolver_djikstra.o resolver_breadthfirstsearch.o rdfs_ge
 .PHONY: clean
 clean:
 	rm -f *.o maze.exe
-
-# NE PAS OUBLIER DE RAJOUTER LES BIBLIOTHEQUES SPECIALES	!!!
-#-lssl -lcrypto -lncurses
