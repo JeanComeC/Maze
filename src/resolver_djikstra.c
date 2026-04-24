@@ -12,5 +12,7 @@ des cellules boueuses qui coute "3" par exemple, car il retournera le chemin le 
 bool djikstra_main(const struct Grid* grid, struct Position start_position, struct Position arrival_position){
     if(!grid || !grid->cells)return false;
     //
+    printf("Sorry, this algorithm has not yet been coded !\n");
+    //
     return true;
 }

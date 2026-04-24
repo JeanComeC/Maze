@@ -16,7 +16,7 @@ bool breadthfirstsearch_main(const struct Grid* grid, struct Position start_posi
     struct Grid_BFS grid_BFS=create_grid_BFS(grid->height,grid->width);
     struct Position* queue=create_queue(grid->height,grid->width);
     int front=0;
-    int rear=0;
+    int rear=-1;
     int size_queue=0;
     const int size_queue_max=(grid->height)*(grid->width);
 
@@ -33,20 +33,27 @@ bool breadthfirstsearch_main(const struct Grid* grid, struct Position start_posi
         if(queue[front].h==arrival_position.h && queue[front].w==arrival_position.w)break;
 
         //On ajoute les voisins dans la file :
-        for(enum Direction i;i<4;i++){
+        for(enum Direction i=NORTH;i<4;i++){
             if(grid->cells[queue[front].h][queue[front].w].adjacent_cells[i]!=NULL){
-                struct Position enfant = {};
-                if(!update_parent(&grid_BFS,queue[front],i,&enfant)){
-                    fprintf(stderr,"Error update_parent().\n");
-                    free_queue(queue);
-                    free_grid_BFS(&grid_BFS);
-                    return false;
-                }
-                if(!en_queue(queue,&rear,&size_queue,size_queue_max,enfant)){
-                    fprintf(stderr,"Error en_queue().\n");
-                    free_queue(queue);
-                    free_grid_BFS(&grid_BFS);
-                    return false;
+                //On calcule la position de l'enfant
+                int enfant_h = f_height_next_cell(queue[front].h, i);
+                int enfant_w = f_width_next_cell(queue[front].w, i);
+
+                //on ne traite que les cellules pas encore visitées
+                if(grid_BFS.cells[enfant_h][enfant_w].parent==NULL && !(enfant_h == start_position.h && enfant_w == start_position.w)){//roublardise: le ! est le résultat de la comparaison
+                    struct Position enfant = {.h=enfant_h,.w=enfant_w};
+                    if(!update_parent(&grid_BFS,queue[front],i,&enfant)){
+                        fprintf(stderr,"Error update_parent().\n");
+                        free_queue(queue);
+                        free_grid_BFS(&grid_BFS);
+                        return false;
+                    }
+                    if(!en_queue(queue,&rear,&size_queue,size_queue_max,enfant)){
+                        fprintf(stderr,"Error en_queue().\n");
+                        free_queue(queue);
+                        free_grid_BFS(&grid_BFS);
+                        return false;
+                    }
                 }
             }
         }
@@ -67,6 +74,7 @@ bool breadthfirstsearch_main(const struct Grid* grid, struct Position start_posi
         tmp->chemin=true;
         tmp=tmp->parent;
     }
+    tmp->chemin=true;//sinon, on valide pas le départ !
 
     //AFFICHAGE :
     char symbol = '!';
@@ -169,6 +177,7 @@ bool update_parent(struct Grid_BFS* grid_BFS, struct Position parent, enum Direc
         enfant->h=parent.h+1;
         enfant->w=parent.w;
         grid_BFS->cells[enfant->h][enfant->w].parent=&(grid_BFS->cells[parent.h][parent.w]);
+        break;
 
     case WEST:
         enfant->h=parent.h;
@@ -202,5 +211,4 @@ void affichage_EAST_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol)
         }
     }
 }
-
 

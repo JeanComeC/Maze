@@ -12,7 +12,6 @@
 
 //ENUMERATION
 
-
 //STRUCTURE
 struct Cell_BFS{
     struct Cell_BFS* parent;

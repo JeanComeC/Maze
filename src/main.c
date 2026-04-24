@@ -120,8 +120,8 @@ int main(int argc, char** argv){//HEIGHT WIDTH
     int reponse=choix_utilisateur(1,3);
 
     //Je choisis arbitrairement que l'entrée est en bas à gauche, et l'arrivée en haut à droite :
-    struct Position start_position = {.h=height,.w=0};
-    struct Position arrival_position = {.h=0,.w=width};
+    struct Position start_position = {.h=height-1,.w=0};
+    struct Position arrival_position = {.h=0,.w=width-1};
 
     switch(reponse){
     case 1:
@@ -141,11 +141,14 @@ int main(int argc, char** argv){//HEIGHT WIDTH
         break;
 
     case 3:
-        /* code */
+        if(!a_main(&grid_main,start_position,arrival_position)){
+            fprintf(stderr,"Error A*.\n");
+            free_grid(&grid_main);
+            exit(1);
+        }
         break;
     }
 
-    printf("\ntout c'est bien passé !\n");
     //NETTOYAGE :
     free_grid(&grid_main);
 
