@@ -203,10 +203,4 @@ void affichage_EAST_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol)
     }
 }
 
-// void affichage_SOUTH_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol){
-//     if(!cell.adjacent_cells[SOUTH]){
-//         printf("---+");
-//     }else{
-//         printf("   +");
-//     }
-// }
+
