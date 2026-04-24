@@ -43,5 +43,8 @@ bool de_queue(int* front, int* size);
 //bool stalk_neighbour(struct Position initial, const struct Grid* grid, struct Position* queue);
 bool update_parent(struct Grid_BFS* grid_BFS, struct Position parent, enum Direction direction_parent, struct Position* enfant);
 
+// ===
+void affichage_EAST_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol);
+//void affichage_SOUTH_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol);
 
 #endif

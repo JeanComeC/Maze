@@ -59,12 +59,35 @@ bool breadthfirstsearch_main(const struct Grid* grid, struct Position start_posi
             return false;
         }
     }
+    free_queue(queue);
 
     //INVERSION :
-    
+    struct Cell_BFS* tmp = &(grid_BFS.cells[arrival_position.h][arrival_position.w]);
+    while(tmp->parent!=NULL){
+        tmp->chemin=true;
+        tmp=tmp->parent;
+    }
 
     //AFFICHAGE :
-    //dkdkdk
+    char symbol = '!';
+    affichage_00(grid->width);
+    for(int m=0;m<grid->height;m++){
+        printf("|");
+        for(int n=0;n<grid->width;n++){
+            if((m==start_position.h && n==start_position.w) || (m==arrival_position.h && n==arrival_position.w)){
+                symbol='X';
+            }else{
+                symbol='O';
+            }
+            affichage_EAST_BFS(grid->cells[m][n],grid_BFS.cells[m][n],symbol);
+        }
+        printf("\n");
+        printf("+");
+        for(int n=0;n<grid->width;n++){
+            affichage_SOUTH(grid->cells[m][n]);
+        }
+        printf("\n");
+    }
 
     //NETTOYAGE :
     free_grid_BFS(&grid_BFS);
@@ -162,4 +185,28 @@ bool update_parent(struct Grid_BFS* grid_BFS, struct Position parent, enum Direc
     return true;
 }
 
+// ===
 
+void affichage_EAST_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol){
+    if(!cell.adjacent_cells[EAST]){
+        if(cell_BFS.chemin){
+            printf(" %c |",symbol);
+        }else{
+            printf("   |");
+        }
+    }else{
+        if(cell_BFS.chemin){
+            printf(" %c  ",symbol);
+        }else{
+            printf("    ");
+        }
+    }
+}
+
+// void affichage_SOUTH_BFS(struct Cell cell, struct Cell_BFS cell_BFS, char symbol){
+//     if(!cell.adjacent_cells[SOUTH]){
+//         printf("---+");
+//     }else{
+//         printf("   +");
+//     }
+// }
