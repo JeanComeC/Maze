@@ -17,6 +17,6 @@
 
 
 //PROTOTYPE
-bool djikstra_main(struct Grid grid, struct Position start_position, struct Position arrival_position);
+bool djikstra_main(const struct Grid* grid, struct Position start_position, struct Position arrival_position);
 
 #endif

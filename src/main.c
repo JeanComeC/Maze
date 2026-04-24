@@ -125,7 +125,7 @@ int main(int argc, char** argv){//HEIGHT WIDTH
 
     switch(reponse){
     case 1:
-        if(!breadthfirstsearch_main(grid_main,start_position,arrival_position)){
+        if(!breadthfirstsearch_main(&grid_main,start_position,arrival_position)){
             fprintf(stderr,"Error BreadthFirstSearch.\n");
             free_grid(&grid_main);
             exit(1);
@@ -133,7 +133,7 @@ int main(int argc, char** argv){//HEIGHT WIDTH
         break;
     
     case 2:
-        if(!djikstra_main(grid_main,start_position,arrival_position)){
+        if(!djikstra_main(&grid_main,start_position,arrival_position)){
             fprintf(stderr,"Error Djikstra.\n");
             free_grid(&grid_main);
             exit(1);
